@@ -1,5 +1,6 @@
 package com.eventsystem.security;
 
+import com.eventsystem.config.PublicAddress;
 import jakarta.servlet.DispatcherType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -57,9 +58,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.origins}") String origins) {
         CorsConfiguration config = new CorsConfiguration();
-        // Hosts given without a scheme (as Render passes them between services) mean https.
         config.setAllowedOrigins(Arrays.stream(origins.split(",")).map(String::trim).filter(o -> !o.isEmpty())
-                .map(o -> o.startsWith("http://") || o.startsWith("https://") ? o : "https://" + o).toList());
+                .map(PublicAddress::normalize).toList());
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

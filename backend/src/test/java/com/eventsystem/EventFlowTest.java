@@ -208,6 +208,14 @@ class EventFlowTest {
     }
 
     @Test
+    void publicAddressesAreNormalised() {
+        assert com.eventsystem.config.PublicAddress.normalize("pulse-web-solq")
+                .equals("https://pulse-web-solq.onrender.com");
+        assert com.eventsystem.config.PublicAddress.normalize("example.com/").equals("https://example.com");
+        assert com.eventsystem.config.PublicAddress.normalize("http://localhost:5173").equals("http://localhost:5173");
+    }
+
+    @Test
     void forecastSmoothsTowardThePrior() {
         assert Math.abs(com.eventsystem.service.AttendanceForecaster.rate(0, 0) - 0.85) < 1e-9;
         assert Math.abs(com.eventsystem.service.AttendanceForecaster.rate(2, 0) - 0.425) < 1e-9;

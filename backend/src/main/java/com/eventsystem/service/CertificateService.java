@@ -1,5 +1,6 @@
 package com.eventsystem.service;
 
+import com.eventsystem.config.PublicAddress;
 import com.eventsystem.model.Event;
 import com.eventsystem.model.Registration;
 import com.eventsystem.model.RegistrationStatus;
@@ -47,8 +48,7 @@ public class CertificateService {
                               @Value("${app.public-url}") String publicUrl) {
         this.registrations = registrations;
         this.qr = qr;
-        String url = publicUrl.trim().replaceAll("/+$", "");
-        this.publicUrl = url.startsWith("http://") || url.startsWith("https://") ? url : "https://" + url;
+        this.publicUrl = PublicAddress.normalize(publicUrl);
     }
 
     /** Issues (once) and renders the caller's certificate for a registration. */

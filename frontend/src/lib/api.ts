@@ -9,10 +9,12 @@ const TOKEN_KEY = 'pulse.token'
 /**
  * Where the backend lives. Empty in development (Vite proxies /api to it);
  * set VITE_API_URL at build time when the backend is on another host.
- * A bare host (as Render passes between services) means https.
+ * "example.com" means https://example.com; a bare name like "pulse-api-x89l"
+ * (what a Render Blueprint passes between services) means <name>.onrender.com.
  */
 const RAW_API = (import.meta.env.VITE_API_URL ?? '').trim().replace(/\/+$/, '')
-const API = RAW_API && !/^https?:\/\//.test(RAW_API) ? `https://${RAW_API}` : RAW_API
+const API = !RAW_API || /^https?:\/\//.test(RAW_API) ? RAW_API
+  : `https://${RAW_API.includes('.') || RAW_API.startsWith('localhost') ? RAW_API : `${RAW_API}.onrender.com`}`
 const apiUrl = (path: string) => `${API}/api${path}`
 
 export function getToken(): string | null {
