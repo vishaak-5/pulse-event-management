@@ -2,6 +2,8 @@
 
 Full Stack Development project · Vishaak R (24BCS314)
 
+**Live demo:** https://pulse-web-solq.onrender.com (free hosting: the first load after idle can take about a minute)
+
 Organizers publish events, admins approve them, attendees register and get QR
 tickets. Full events open a waitlist that promotes people automatically when a
 seat frees up. Organizers scan tickets at the door and see live analytics.
