@@ -1,0 +1,7 @@
+# Linux build servers need LF in shell scripts; Windows scripts keep CRLF.
+* text=auto
+mvnw text eol=lf
+*.sh text eol=lf
+*.cmd text eol=crlf
+*.png binary
+*.jpg binary

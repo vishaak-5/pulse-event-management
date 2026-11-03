@@ -1,0 +1,53 @@
+# Render Blueprint: creates the API and the website from this repo.
+# Dashboard -> New -> Blueprint -> pick this repository.
+# You will be asked for DB_URL, DB_USER and DB_PASSWORD (from your Aiven MySQL service).
+services:
+  - type: web
+    name: pulse-api
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /api/stats/public
+    envVars:
+      - key: DB_URL
+        sync: false # jdbc:mysql://HOST:PORT/defaultdb?sslMode=REQUIRED&serverTimezone=Asia/Kolkata
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_POOL_SIZE
+        value: "4"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: SEED_PASSWORD
+        generateValue: true # password of the demo accounts; read it in the dashboard
+      - key: CORS_ORIGINS
+        fromService:
+          type: web
+          name: pulse-web
+          property: host
+      - key: PUBLIC_URL
+        fromService:
+          type: web
+          name: pulse-web
+          property: host
+
+  - type: web
+    name: pulse-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: pulse-api
+          property: host
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
