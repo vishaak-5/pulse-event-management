@@ -132,7 +132,7 @@ function Footer() {
             Smart Event Management and Registration System - a Full Stack Development project.
           </p>
         </div>
-        <p className="font-mono text-xs text-foreground-faint">Spring Boot · React · MySQL · Three.js</p>
+        <p className="font-mono text-xs text-foreground-faint">MongoDB · Express · React · Node.js</p>
       </div>
     </footer>
   )

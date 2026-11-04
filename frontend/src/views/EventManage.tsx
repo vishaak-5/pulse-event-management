@@ -1,6 +1,6 @@
 import { animated, useSpring } from '@react-spring/web'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { Page } from '../components/Layout'
 import { useToast } from '../components/Toast'
@@ -113,6 +113,20 @@ export function EventManage() {
     }
   }
 
+  const navigate = useNavigate()
+  async function deleteEvent() {
+    if (!window.confirm('Delete this event permanently? Its registrations and ratings are removed too. This cannot be undone.')) return
+    setBusy(true)
+    try {
+      await api.deleteEvent(eventId)
+      toast('Event deleted.', 'info')
+      navigate('/organizer')
+    } catch (e) {
+      toast((e as Error).message, 'error')
+      setBusy(false)
+    }
+  }
+
   const [posterBusy, setPosterBusy] = useState(false)
   async function poster() {
     if (!event) return
@@ -178,6 +192,7 @@ export function EventManage() {
           {event.status === 'APPROVED' && <Button variant="ghost" busy={posterBusy} onClick={poster}>Poster</Button>}
           {editable && <LinkButton to={`/organizer/events/${event.id}/edit`} variant="ghost">Edit</LinkButton>}
           {event.status !== 'CANCELLED' && <Button variant="danger" busy={busy} onClick={cancelEvent}>Cancel event</Button>}
+          {stats.checkedIn === 0 && <Button variant="danger" busy={busy} onClick={deleteEvent}>Delete</Button>}
         </PageHeader>
       </div>
       {event.status === 'REJECTED' && (

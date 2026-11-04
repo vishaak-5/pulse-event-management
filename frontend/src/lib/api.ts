@@ -151,6 +151,7 @@ export const api = {
   createEvent: (e: EventRequest) => request<EventView>('POST', '/organizer/events', e),
   updateEvent: (id: number, e: EventRequest) => request<EventView>('PUT', `/organizer/events/${id}`, e),
   cancelEvent: (id: number) => request<EventView>('POST', `/organizer/events/${id}/cancel`),
+  deleteEvent: (id: number) => request<void>('DELETE', `/organizer/events/${id}`),
   attendees: (id: number) => request<Attendee[]>('GET', `/organizer/events/${id}/attendees`),
   analytics: (id: number) => request<EventAnalytics>('GET', `/organizer/events/${id}/analytics`),
   checkIn: (ticketCode: string, eventId?: number) =>

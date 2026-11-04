@@ -1,9 +1,12 @@
-backend/target/
-backend/config/
+# Leftover local files of the old Java backend (config holds local secrets)
+backend/
 frontend/node_modules/
 frontend/dist/
+server/node_modules/
+server/.data/
 .env
 .env.*
+!.env.example
 *.log
 .idea/
 .vscode/

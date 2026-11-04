@@ -1,4 +1,4 @@
-// Mirrors the backend DTOs (com.eventsystem.dto.*).
+// Mirrors the JSON the Express API sends (server/src/services/views.js).
 
 export type Role = 'ADMIN' | 'ORGANIZER' | 'ATTENDEE'
 export type EventStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED'
